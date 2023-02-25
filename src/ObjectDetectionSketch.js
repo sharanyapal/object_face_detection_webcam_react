@@ -69,25 +69,33 @@ export default function sketch (p) {
         p.image(capture, 0, 0);      
         p.fill(0,0,0,0);
 
-        cocoDrawings.map((drawing) => {
-            if (drawing) {
-                p.textSize(20);
-                p.strokeWeight(1);
-                const textX = drawing.bbox[0]+drawing.bbox[2];
-                const textY = drawing.bbox[1]+drawing.bbox[3];
-                
-                const confidenetext = "Confidence: "+ drawing.score.toFixed(1);
-                const textWidth = p.textWidth(confidenetext);
-                
-                const itemTextWidth = p.textWidth(drawing.class);
-                p.text(drawing.class, textX-itemTextWidth-10, textY-50);
+        if (cocoDrawings.length > 0) {
+            cocoDrawings.map((drawing) => {
+                if (drawing) {
+                    p.textSize(20);
+                    p.strokeWeight(1);
+                    const textX = drawing.bbox[0]+drawing.bbox[2];
+                    const textY = drawing.bbox[1]+drawing.bbox[3];
+                    
+                    const confidenetext = "Confidence: "+ drawing.score.toFixed(1);
+                    const textWidth = p.textWidth(confidenetext);
+                    
+                    const itemTextWidth = p.textWidth(drawing.class);
+                    p.text(drawing.class, textX-itemTextWidth-10, textY-50);
 
-                p.text(confidenetext, textX-textWidth-10, textY-10);
-                p.strokeWeight(4);
-                p.stroke('rgb(100%,100%,100%)');
-                p.rect(drawing.bbox[0], drawing.bbox[1], drawing.bbox[2], drawing.bbox[3]);
-            }
-        });
+                    p.text(confidenetext, textX-textWidth-10, textY-10);
+                    p.strokeWeight(4);
+                    p.stroke('rgb(0%,100%,0%)');
+                    p.rect(drawing.bbox[0], drawing.bbox[1], drawing.bbox[2], drawing.bbox[3]);
+                }
+            })
+        }
+        else{
+                // no face detected, print message
+                p.textSize(30);
+                p.fill(255, 0, 0);
+                p.text("No face detected", 50, 50);
+        };
 
         faceDrawings.map((drawing) => {
             if (drawing) {
@@ -123,7 +131,7 @@ export default function sketch (p) {
                 p.text(expressiontext, textX-expressionWidth-10, textY-10);
                 
                 p.strokeWeight(4);
-                p.stroke('rgb(100%,100%,100%)');
+                p.stroke('rgb(0%,0%,100%)');
                 p.rect(drawing.detection.box._x, drawing.detection.box._y, drawing.detection.box._width, drawing.detection.box._height);
             }
         });
