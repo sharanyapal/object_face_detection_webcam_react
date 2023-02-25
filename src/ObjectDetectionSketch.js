@@ -69,26 +69,34 @@ export default function sketch (p) {
         p.image(capture, 0, 0);      
         p.fill(0,0,0,0);
 
-        if (cocoDrawings.length > 0) {
-            cocoDrawings.map((drawing) => {
-                if (drawing) {
-                    p.textSize(20);
-                    p.strokeWeight(1);
-                    const textX = drawing.bbox[0]+drawing.bbox[2];
-                    const textY = drawing.bbox[1]+drawing.bbox[3];
-                    
-                    const confidenetext = "Confidence: "+ drawing.score.toFixed(1);
-                    const textWidth = p.textWidth(confidenetext);
-                    
-                    const itemTextWidth = p.textWidth(drawing.class);
-                    p.text(drawing.class, textX-itemTextWidth-10, textY-50);
-
-                    p.text(confidenetext, textX-textWidth-10, textY-10);
-                    p.strokeWeight(4);
-                    p.stroke('rgb(0%,100%,0%)');
-                    p.rect(drawing.bbox[0], drawing.bbox[1], drawing.bbox[2], drawing.bbox[3]);
-                }
-            })
+        if (cocoDrawings.length > 0) { 
+            if (cocoDrawings.length === 1) {
+                cocoDrawings.map((drawing) => {
+                    if (drawing) {
+                        p.textSize(20);
+                        p.strokeWeight(1);
+                        const textX = drawing.bbox[0]+drawing.bbox[2];
+                        const textY = drawing.bbox[1]+drawing.bbox[3];
+                        
+                        const confidenetext = "Confidence: "+ drawing.score.toFixed(1);
+                        const textWidth = p.textWidth(confidenetext);
+                        
+                        const itemTextWidth = p.textWidth(drawing.class);
+                        p.text(drawing.class, textX-itemTextWidth-10, textY-50);
+    
+                        p.text(confidenetext, textX-textWidth-10, textY-10);
+                        p.strokeWeight(4);
+                        p.stroke('rgb(0%,100%,0%)');
+                        p.rect(drawing.bbox[0], drawing.bbox[1], drawing.bbox[2], drawing.bbox[3]);
+                    }
+                })        
+            }
+            else {
+                // no face detected, print message
+                p.textSize(30);
+                p.fill(255, 0, 0);
+                p.text("Multiple faces detected", 50, 50);
+            }
         }
         else{
                 // no face detected, print message
